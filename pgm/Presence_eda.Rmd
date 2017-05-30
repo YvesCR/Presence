@@ -12,7 +12,7 @@ output: html_document
 ```{r}
 
 # Installation de pacman si premier run :
-if(!require(pacman)) {
+if(!require(pacman) && require(RPresence)) {
   install.packages("pacman")
   # Un peu etrange, mais le package n'est ni sur cran ni ur bioconductor :
   install.packages("./doc/RPresence_2.12.0.2.zip", repos = NULL)
@@ -96,21 +96,37 @@ print_one_site_estimates(mod2)
 ```{r}
 
 # on choisi une espece arbitrairement:
-i <- 1
+i <- 4
 species <- names_species[i]
 
 col_to_select <- paste(species, 1:3, sep = "_")
 
 # convert to pao object:
 ## on choisi la premiere espece:
+# ici, la difficulte est de faire la part des choses entre unitcov et surcov:
+# unit cov: unit-specific variables
+# surcov: survey-specific variables
+# a priori, il faut encore un peu de travail pour le second type de variable
 pao_p_a <- create.pao(prsc_abs[, col_to_select]
-  , unitcov = cov_prsc_abs)
+  , unitcov = cov_prsc_abs[, -1])
 
+# nombre de surveys (devrait etre 3)
 pao_p_a$nsurveys
 
-## fit some models. Only one survey, so can't expect great results
+# nombre de saisons (devrait etre 1)
+pao_p_a$nseasons
+
+# nombre d'endroits (devrait etre 74)
+pao_p_a$nunits
+
+## fit some models. Only 3 surveys, so can't expect great results
+## la liste des modeles qu'il est possible d'utiliser est assez impressionnante, voir l'aide
+?occ.mod
+?occ.mod.so
 mod1 <- occ.mod(model=list(psi~1, p~SURVEY), data=pao_p_a, type="so")
 mod2 <- occ.mod(model=list(psi~1, p~1), data=pao_p_a, type="so")
+mod3 <- occ.mod(model=list(psi~1, p~SURVEY), cov.list = list("habitat")
+  , data=pao_p_a, type="so")
 
 ## create AIC table
 models<-list(mod1,mod2)
