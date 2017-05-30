@@ -1,0 +1,184 @@
+
+
+PRESENCE - Presence/Absence-Site Occupancy data analysis
+Tue May 30 20:56:35 2017,       Version 12.0_170523.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+==>i=paodata.pao
+==>j=.\pres36f063b524b5.dm
+==>l=pres_psi(habitat)p(1).out
+==> 
+==>quiet
+==>maxfn=32000
+==>name=psi(Habitat)p(1)
+==>lmt=1
+varcov: nsig=6 eps=1.000000e-002
+no model name N,T-->72,5
+
+
+
+
+********* Input Data summary *******
+Number of sites                = 72
+Number of sampling occasions   = 5
+Number of states               = 0
+Number of missing observations = 98
+Data checksum = 53860
+
+NSiteCovs-->2
+site_covname[0]=psi.int
+site_covname[1]=psi.Habitatunbrowsed
+NSampCovs-->1
+samp_covname[0]=p.int
+Primary periods=1 Secondary periods: 5
+Naive occupancy estimate       = 0.4861
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ Weta 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+N=72 T=5 Groups=1 bootstraps=0
+
+-->site 72
+Matrix 1: rows=2, cols=3
+            -,a1,a2
+psi           1 psi.Habitatunbrowsed
+========================
+
+Matrix 2: rows=6, cols=2
+            -,b1
+p1            1
+p2            1
+p3            1
+p4            1
+p5            1
+========================
+
+Matrix 3: rows=0, cols=0
+========================
+
+Matrix 4: rows=0, cols=0
+========================
+
+Matrix 5: rows=0, cols=0
+========================
+
+Matrix 6: rows=0, cols=0
+========================
+
+modtype=1
+
+Custom Model:
+
+Number of significant digits   =   7.7
+
+Model has been fit using the logistic link.
+
+
+Number of parameters           = 3
+Number of function calls           = 123
+-2log(likelihood)              = 258.2643
+AIC                            = 264.2643
+
+Untransformed Estimates of coefficients for covariates (Beta's)
+======================================================================
+                                          estimate    std.error
+A1   psi                              :   1.149233    0.655547
+A2   psi.psi.Habitatunbrowsed         :  -1.225278    0.720332
+B1   p1                               :  -0.622255    0.236633
+
+============================================================
+
+   Individual Site estimates of <psi>
+                Site               estimate  Std.err   95% conf. interval
+psi             1 site 1          :  0.7594   0.1198     0.4661 -  0.9194
+
+============================================================
+
+   Individual Site estimates of <p1>
+                Site               estimate  Std.err   95% conf. interval
+p1              1 site 1          :  0.3493   0.0538     0.2524 -  0.4605
+p2              1 site 1          :  0.3493   0.0538     0.2524 -  0.4605
+p3              1 site 1          :  0.3493   0.0538     0.2524 -  0.4605
+p4              1 site 1          :  0.3493   0.0538     0.2524 -  0.4605
+p5              1 site 1          :  0.3493   0.0538     0.2524 -  0.4605
+
+============================================================
+
+
+ DERIVED parameter - Psi-conditional = [Pr(occ | detection history)]
+
+        Site                     psi-cond  Std.err     95% conf. interval
+psi-cond     1   site 1        :   0.3614  0.2003     0.0936 - 0.7561 
+psi-cond     2   site 2        :   0.3614  0.2003     0.0936 - 0.7561 
+psi-cond     3   site 3        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond     4   site 4        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond     5   site 5        :   0.3614  0.2003     0.0936 - 0.7561 
+psi-cond     6   site 6        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond     7   site 7        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond     8   site 8        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond     9   site 9        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond    10  site 10        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    11  site 11        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    12  site 12        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    13  site 13        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    14  site 14        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond    15  site 15        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    16  site 16        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    17  site 17        :   0.4651  0.2008     0.1516 - 0.8088 
+psi-cond    18  site 18        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    19  site 19        :   0.2034  0.0921     0.0773 - 0.4376 
+psi-cond    20  site 20        :   0.3614  0.2003     0.0936 - 0.7561 
+psi-cond    21  site 21        :   0.4651  0.2008     0.1516 - 0.8088 
+psi-cond    22  site 22        :   0.2034  0.0921     0.0773 - 0.4376 
+psi-cond    23  site 23        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    24  site 24        :   0.2034  0.0921     0.0773 - 0.4376 
+psi-cond    25  site 25        :   0.2034  0.0921     0.0773 - 0.4376 
+psi-cond    26  site 26        :   0.2034  0.0921     0.0773 - 0.4376 
+psi-cond    27  site 27        :   0.2034  0.0921     0.0773 - 0.4376 
+psi-cond    28  site 28        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    29  site 29        :   0.2034  0.0921     0.0773 - 0.4376 
+psi-cond    30  site 30        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond    31  site 31        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond    32  site 32        :   0.3614  0.2003     0.0936 - 0.7561 
+psi-cond    33  site 33        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond    34  site 34        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    35  site 35        :   0.0976  0.0611     0.0270 - 0.2966 
+psi-cond    36  site 36        :   0.0976  0.0611     0.0270 - 0.2966 
+psi-cond    37  site 37        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    38  site 38        :   0.4651  0.2008     0.1516 - 0.8088 
+psi-cond    39  site 39        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    40  site 40        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond    41  site 41        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    42  site 42        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    43  site 43        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    44  site 44        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    45  site 45        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    46  site 46        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    47  site 47        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    48  site 48        :   0.3614  0.2003     0.0936 - 0.7561 
+psi-cond    49  site 49        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    50  site 50        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    51  site 51        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    52  site 52        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    53  site 53        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    54  site 54        :   0.3614  0.2003     0.0936 - 0.7561 
+psi-cond    55  site 55        :   0.3614  0.2003     0.0936 - 0.7561 
+psi-cond    56  site 56        :   0.1425  0.0769     0.0462 - 0.3632 
+psi-cond    57  site 57        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    58  site 58        :   0.3614  0.2003     0.0936 - 0.7561 
+psi-cond    59  site 59        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    60  site 60        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    61  site 61        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    62  site 62        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    63  site 63        :   0.2034  0.0921     0.0773 - 0.4376 
+psi-cond    64  site 64        :   0.2034  0.0921     0.0773 - 0.4376 
+psi-cond    65  site 65        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    66  site 66        :   0.4651  0.2008     0.1516 - 0.8088 
+psi-cond    67  site 67        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    68  site 68        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    69  site 69        :   1.0000  0.0000     1.0000 - 1.0000 
+psi-cond    70  site 70        :   0.4651  0.2008     0.1516 - 0.8088 
+psi-cond    71  site 71        :   0.2034  0.0921     0.0773 - 0.4376 
+psi-cond    72  site 72        :   1.0000  0.0000     1.0000 - 1.0000 
+
+CPU time= 0 seconds (0.00 min)
+

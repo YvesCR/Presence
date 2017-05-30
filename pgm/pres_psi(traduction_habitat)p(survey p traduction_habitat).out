@@ -1,15 +1,15 @@
 
 
 PRESENCE - Presence/Absence-Site Occupancy data analysis
-Tue May 30 22:38:59 2017,       Version 12.0_170523.
+Tue May 30 23:03:12 2017,       Version 12.0_170523.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ==>i=paodata.pao
-==>j=.\pres36f050af1061.dm
-==>l=pres_psi(1)p(survey).out
+==>j=.\pres3f443cf3cad.dm
+==>l=pres_psi(traduction_habitat)p(survey p traduction_habitat).out
 ==> 
 ==>quiet
 ==>maxfn=32000
-==>name=psi(1)p(SURVEY)
+==>name=psi(traduction_habitat)p(SURVEY + traduction_habitat)
 ==>lmt=1
 varcov: nsig=6 eps=1.000000e-002
 no model name N,T-->74,3
@@ -24,12 +24,14 @@ Number of states               = 0
 Number of missing observations = 132
 Data checksum = 21986
 
-NSiteCovs-->1
+NSiteCovs-->2
 site_covname[0]=psi.int
-NSampCovs-->3
+site_covname[1]=psi.traduction_habitat
+NSampCovs-->4
 samp_covname[0]=p.int
 samp_covname[1]=p.SURVEY2
 samp_covname[2]=p.SURVEY3
+samp_covname[3]=p.traduction_habitat
 Primary periods=1 Secondary periods: 3
 Naive occupancy estimate       = 1.0000
 
@@ -39,16 +41,16 @@ Naive occupancy estimate       = 1.0000
 N=74 T=3 Groups=1 bootstraps=0
 
 -->unit 74
-Matrix 1: rows=2, cols=2
-            -,a1
-psi           1
+Matrix 1: rows=2, cols=3
+            -,a1,a2
+psi           1 psi.traduction_habitat
 ========================
 
-Matrix 2: rows=4, cols=4
-            -,b1,b2,b3
-p1            1 p.SURVEY2 p.SURVEY3
-p2            1 p.SURVEY2 p.SURVEY3
-p3            1 p.SURVEY2 p.SURVEY3
+Matrix 2: rows=4, cols=5
+            -,b1,b2,b3,b4
+p1            1 p.SURVEY2 p.SURVEY3 p.traduction_habitat
+p2            1 p.SURVEY2 p.SURVEY3 p.traduction_habitat
+p3            1 p.SURVEY2 p.SURVEY3 p.traduction_habitat
 ========================
 
 Matrix 3: rows=0, cols=0
@@ -72,18 +74,22 @@ Number of significant digits   =   8.0
 Model has been fit using the logistic link.
 
 
-Number of parameters           = 4
-Number of function calls           = 262
+Number of parameters           = 6
+Number of function calls           = 350
 -2log(likelihood)              = 90.8765
-AIC                            = 98.8765
+AIC                            = 102.8765
+
+***** neg. std.err(s) in VC matrix
 
 Untransformed Estimates of coefficients for covariates (Beta's)
 ======================================================================
                                           estimate    std.error
 A1   psi                              :  26.743932  117008.134115
+A2   psi.psi.traduction_habitat       :   0.000000   -1.#IND00
 B1   p1                               :  -0.268264    0.368438
 B2   p1.p.SURVEY2                     :   0.536528    0.521042
 B3   p1.p.SURVEY3                     :  -3.099032    1.081803
+B4   p1.p.traduction_habitat          :   0.000000   -1.#IND00
 
 ============================================================
 

@@ -1,15 +1,15 @@
 
 
 PRESENCE - Presence/Absence-Site Occupancy data analysis
-Tue May 30 22:38:59 2017,       Version 12.0_170523.
+Tue May 30 23:03:12 2017,       Version 12.0_170523.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ==>i=paodata.pao
-==>j=.\pres36f050af1061.dm
-==>l=pres_psi(1)p(survey).out
+==>j=.\pres3f4421115c94.dm
+==>l=pres_psi(1)p(1).out
 ==> 
 ==>quiet
 ==>maxfn=32000
-==>name=psi(1)p(SURVEY)
+==>name=psi(1)p(1)
 ==>lmt=1
 varcov: nsig=6 eps=1.000000e-002
 no model name N,T-->74,3
@@ -26,10 +26,8 @@ Data checksum = 21986
 
 NSiteCovs-->1
 site_covname[0]=psi.int
-NSampCovs-->3
+NSampCovs-->1
 samp_covname[0]=p.int
-samp_covname[1]=p.SURVEY2
-samp_covname[2]=p.SURVEY3
 Primary periods=1 Secondary periods: 3
 Naive occupancy estimate       = 1.0000
 
@@ -44,11 +42,11 @@ Matrix 1: rows=2, cols=2
 psi           1
 ========================
 
-Matrix 2: rows=4, cols=4
-            -,b1,b2,b3
-p1            1 p.SURVEY2 p.SURVEY3
-p2            1 p.SURVEY2 p.SURVEY3
-p3            1 p.SURVEY2 p.SURVEY3
+Matrix 2: rows=4, cols=2
+            -,b1
+p1            1
+p2            1
+p3            1
 ========================
 
 Matrix 3: rows=0, cols=0
@@ -67,23 +65,31 @@ modtype=1
 
 Custom Model:
 
-Number of significant digits   =   8.0
+Number of significant digits   =   1.9
+
+**** Numerical convergence may not have been reached.
+     Parameter estimates converged to approximately 
+     1.92 significant digits.
+
 
 Model has been fit using the logistic link.
 
 
-Number of parameters           = 4
-Number of function calls           = 262
--2log(likelihood)              = 90.8765
-AIC                            = 98.8765
+Number of parameters           = 2
+Number of function calls           = 132
+
+**** Numerical convergence may not have been reached.
+     Parameter estimates converged to approximately 
+     1.92 significant digits.
+
+-2log(likelihood)              = 115.9091
+AIC                            = 119.9091
 
 Untransformed Estimates of coefficients for covariates (Beta's)
 ======================================================================
                                           estimate    std.error
-A1   psi                              :  26.743932  117008.134115
-B1   p1                               :  -0.268264    0.368438
-B2   p1.p.SURVEY2                     :   0.536528    0.521042
-B3   p1.p.SURVEY3                     :  -3.099032    1.081803
+A1   psi                              :  28.034556  213308.386270
+B1   p1                               :  -0.643550    0.221827
 
 ============================================================
 
@@ -95,9 +101,9 @@ psi             1 unit 1          :  1.0000   0.0000     0.0000 -  1.0000
 
    Individual Site estimates of <p1>
                 Site               estimate  Std.err   95% conf. interval
-p1              1 unit 1          :  0.4333   0.0905     0.2708 -  0.6116
-p2              1 unit 1          :  0.5667   0.0905     0.3884 -  0.7292
-p3              1 unit 1          :  0.0333   0.0328     0.0047 -  0.2020
+p1              1 unit 1          :  0.3444   0.0501     0.2538 -  0.4480
+p2              1 unit 1          :  0.3444   0.0501     0.2538 -  0.4480
+p3              1 unit 1          :  0.3444   0.0501     0.2538 -  0.4480
 
 ============================================================
 

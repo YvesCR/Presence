@@ -11,14 +11,16 @@ output: html_document
 
 ```{r}
 
-# Installation de pacman si premier run :
-if(!require(pacman) && require(RPresence)) {
-  install.packages("pacman")
-  # Un peu etrange, mais le package n'est ni sur cran ni ur bioconductor :
-  install.packages("./doc/RPresence_2.12.0.2.zip", repos = NULL)
-}
+# modifier le chemin du fichier ici:
+path_project <- "C:/YCR Perso/Presence/Presence/"
 
-# Chargement en memoire des chemins des packages :
+# Installation de pacman si premier run :
+if(!require(pacman)) install.packages("pacman")
+# Un peu etrange, mais le package n'est ni sur cran ni ur bioconductor :
+if(!require(RPresence))
+  install.packages("./doc/RPresence_2.12.0.2.zip", repos = NULL)
+
+# Chargement en memoire du chemin des packages :
 pacman::p_load(tidyverse, RPresence, readxl, DT)
 
 ```
@@ -28,13 +30,13 @@ pacman::p_load(tidyverse, RPresence, readxl, DT)
 ```{r}
 
 # Importer les donnees:
-prsc_abs <- readxl::read_excel(path = "./data/TABLEUR_MP.xlsx"
+prsc_abs <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.xlsx")
   , sheet = "PRSCE ABSCE"
   , skip = 1
   , na = ".")
 
 # Seulement la premiere ligne:
-lab_prsc_abs <- readxl::read_excel(path = "./data/TABLEUR_MP.xlsx"
+lab_prsc_abs <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.xlsx")
   , sheet = "PRSCE ABSCE"
   , na = ".")
 name_file_species <- names(lab_prsc_abs)
@@ -51,52 +53,29 @@ nb_var_p_a <- length(names(prsc_abs))- 1
 if(nb_var_p_a != length(names_species) * 3) warning("Probleme lors du recodage des noms de variables")
 ## recodage:
 names(prsc_abs)[-1] <- paste(names_species[floor((1:nb_var_p_a+2)/3)], 1:3, sep = "_")
-name_main_col <- "num_site_passage"
+name_main_col <- "num_site"
 names(prsc_abs)[1] <- name_main_col
 
 # import covariates variables:
-cov_prsc_abs <- readxl::read_excel(path = "./data/TABLEUR_MP.xlsx"
+cov_prsc_abs <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.xlsx")
   , sheet = "HABITAT"
   , na = ".")
 # clean the names:
 names(cov_prsc_abs) <- gsub(" ", "_", tolower(names(cov_prsc_abs)))
 
-```
-
-# Demonstration issue du package:
-
-```{r}
-
-## Not run: 
-# load a csv file with detection-histories
-filename<-system.file("extdata/Blue_Ridge_pg99.csv",package="RPresence")
-salmdr.csv<-read.csv(filename)
-
-# Create PRESENCE input file object from csv
-salmdr.data<-create.pao(salmdr.csv,paoname="salmdr.pao")
-
-## fit some models
-mod1<-occ.mod(model=list(psi~1,p~SURVEY),data=salmdr.data,type="so")
-mod2<-occ.mod(model=list(psi~1,p~1)     ,data=salmdr.data,type="so")
-
-## create AIC table
-models<-list(mod1,mod2)
-results<-create.aic.table(models)
-summary(results)
-
-## print real estimates
-print_one_site_estimates(mod1)
-print_one_site_estimates(mod2)
+# Attention, les donnees sont toutes numeriques donc utilisables telles quelles.
+# Neanmoins, si ce sont des factors, elles doivent etre dummifies(discretisees) pour pouvoir servir dans le modele.
 
 ```
-
 
 # Application du modele:
 
 ```{r}
 
+# question: une seule saison tout le temps?
+
 # on choisi une espece arbitrairement:
-i <- 4
+i <- 12
 species <- names_species[i]
 
 col_to_select <- paste(species, 1:3, sep = "_")
@@ -106,9 +85,10 @@ col_to_select <- paste(species, 1:3, sep = "_")
 # ici, la difficulte est de faire la part des choses entre unitcov et surcov:
 # unit cov: unit-specific variables
 # surcov: survey-specific variables
-# a priori, il faut encore un peu de travail pour le second type de variable
+# a priori, il faut encore un peu de travail pour le second type de variable, pe a partir de l'onglet total du fichier 
+# On ne prend que traduction_habitat, etant donnee que c'est la seule variable dummifie:
 pao_p_a <- create.pao(prsc_abs[, col_to_select]
-  , unitcov = cov_prsc_abs[, -1])
+  , unitcov = cov_prsc_abs[, 2])
 
 # nombre de surveys (devrait etre 3)
 pao_p_a$nsurveys
@@ -121,20 +101,52 @@ pao_p_a$nunits
 
 ## fit some models. Only 3 surveys, so can't expect great results
 ## la liste des modeles qu'il est possible d'utiliser est assez impressionnante, voir l'aide
-?occ.mod
-?occ.mod.so
+# ?occ.mod
+# ?occ.mod.so
+# modele 1: 
 mod1 <- occ.mod(model=list(psi~1, p~SURVEY), data=pao_p_a, type="so")
 mod2 <- occ.mod(model=list(psi~1, p~1), data=pao_p_a, type="so")
-mod3 <- occ.mod(model=list(psi~1, p~SURVEY), cov.list = list("habitat")
-  , data=pao_p_a, type="so")
+mod3 <- occ.mod(model=list(psi~traduction_habitat, p~SURVEY+traduction_habitat), data=pao_p_a, type="so")
 
 ## create AIC table
-models<-list(mod1,mod2)
+models<-list(mod1,mod2, mod3)
 results<-create.aic.table(models)
 summary(results)
+res_tab <- results$table
+
+## perform model averageing
+psi.ma<-mod.avg(aic.tab=results,param="psi")
+p.ma<-mod.avg(aic.tab=results,param="p")
+
+## print real estimates
+print_one_site_estimates(mod1)
+print_one_site_estimates(mod2)
+print_one_site_estimates(mod3)
+
+# coefficients pour psi
+coef(mod1, "psi")
+coef(mod2, "psi")
+coef(mod3, "psi")
 
 ```
 
+## Conlusion
 
+Probabilite certaine d'occupation (1).
 
+Probabilite moyenne de detection (0.43~0.34).
 
+La variable traduction_habitat ne semble pas jouer un role quelconque. 
+
+Cela vient du fait qu'il n'y a pas d'individus avec une traduction_habitat dans notre espece.
+
+```{r}
+
+fusion_both <- prsc_abs %>%
+  left_join(cov_prsc_abs, by = "num_site") %>% 
+  mutate(c1 = ifelse(is.na(Cordulia_aenea_1), "Unknown", Cordulia_aenea_1))
+
+ggplot(fusion_both, aes(x = c1, fill = as.factor(traduction_habitat))) +
+  geom_bar()
+
+```

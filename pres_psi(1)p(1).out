@@ -1,10 +1,10 @@
 
 
 PRESENCE - Presence/Absence-Site Occupancy data analysis
-Tue May 30 19:07:59 2017,       Version 12.0_170523.
+Tue May 30 22:38:59 2017,       Version 12.0_170523.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ==>i=paodata.pao
-==>j=.\pres3c58317d4c21.dm
+==>j=.\pres36f07d3a5a44.dm
 ==>l=pres_psi(1)p(1).out
 ==> 
 ==>quiet
@@ -21,8 +21,8 @@ no model name N,T-->74,3
 Number of sites                = 74
 Number of sampling occasions   = 3
 Number of states               = 0
-Number of missing observations = 207
-Data checksum = 21798
+Number of missing observations = 132
+Data checksum = 21986
 
 NSiteCovs-->1
 site_covname[0]=psi.int
@@ -65,21 +65,31 @@ modtype=1
 
 Custom Model:
 
-Number of significant digits   =   9.8
+Number of significant digits   =   1.9
+
+**** Numerical convergence may not have been reached.
+     Parameter estimates converged to approximately 
+     1.92 significant digits.
+
 
 Model has been fit using the logistic link.
 
 
 Number of parameters           = 2
-Number of function calls           = 122
--2log(likelihood)              = 19.0954
-AIC                            = 23.0954
+Number of function calls           = 132
+
+**** Numerical convergence may not have been reached.
+     Parameter estimates converged to approximately 
+     1.92 significant digits.
+
+-2log(likelihood)              = 115.9091
+AIC                            = 119.9091
 
 Untransformed Estimates of coefficients for covariates (Beta's)
 ======================================================================
                                           estimate    std.error
-A1   psi                              :  28.317043  631921.998647
-B1   p1                               :  -0.693147    0.547723
+A1   psi                              :  28.034556  213308.386270
+B1   p1                               :  -0.643550    0.221827
 
 ============================================================
 
@@ -91,9 +101,9 @@ psi             1 unit 1          :  1.0000   0.0000     0.0000 -  1.0000
 
    Individual Site estimates of <p1>
                 Site               estimate  Std.err   95% conf. interval
-p1              1 unit 1          :  0.3333   0.1217     0.1460 -  0.5940
-p2              1 unit 1          :  0.3333   0.1217     0.1460 -  0.5940
-p3              1 unit 1          :  0.3333   0.1217     0.1460 -  0.5940
+p1              1 unit 1          :  0.3444   0.0501     0.2538 -  0.4480
+p2              1 unit 1          :  0.3444   0.0501     0.2538 -  0.4480
+p3              1 unit 1          :  0.3444   0.0501     0.2538 -  0.4480
 
 ============================================================
 
