@@ -1,0 +1,17 @@
+Package: RPresence
+Type: Package
+Title: R Interface for Program PRESENCE
+Version: 2.12.0.2
+Date: 2017-05-23
+Author: Darryl MacKenzie and Jim Hines
+Maintainer: Darryl MacKenzie <darryl@proteus.co.nz>
+Description: Provide an R interface for running occupancy models available in
+    Program PRESENCE (http://www.mbr-pwrc.usgs.gov/software/presence.html), plus
+    some additional helpful routines.
+License: GPL-2
+Imports: nlme
+Packaged: 2017-05-23 12:08 EDT; jhines
+RoxygenNote: 5.0.1
+Suggests: testthat
+Built: R 3.3.0; x86_64-w64-mingw32; 2017-05-23 16:45:40 UTC; windows
+Archs: i386, x64

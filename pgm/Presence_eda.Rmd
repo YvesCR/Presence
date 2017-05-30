@@ -1,0 +1,124 @@
+---
+title: "Presence/Absence de batraciens"
+author: "YCR"
+date: "30 May 2017"
+output: html_document
+---
+
+# Initialisation
+
+## R et packages:
+
+```{r}
+
+# Installation de pacman si premier run :
+if(!require(pacman)) {
+  install.packages("pacman")
+  # Un peu etrange, mais le package n'est ni sur cran ni ur bioconductor :
+  install.packages("./doc/RPresence_2.12.0.2.zip", repos = NULL)
+}
+
+# Chargement en memoire des chemins des packages :
+pacman::p_load(tidyverse, RPresence, readxl, DT)
+
+```
+
+## Data
+
+```{r}
+
+# Importer les donnees:
+prsc_abs <- readxl::read_excel(path = "./data/TABLEUR_MP.xlsx"
+  , sheet = "PRSCE ABSCE"
+  , skip = 1
+  , na = ".")
+
+# Seulement la premiere ligne:
+lab_prsc_abs <- readxl::read_excel(path = "./data/TABLEUR_MP.xlsx"
+  , sheet = "PRSCE ABSCE"
+  , na = ".")
+name_file_species <- names(lab_prsc_abs)
+
+# clean les noms d'especes:
+names_species <- gsub(" ", "_", name_file_species[which(name_file_species != ".")])
+
+# Verification:
+names_species
+
+# Change les labels du csv:
+nb_var_p_a <- length(names(prsc_abs))- 1
+## QA, 3 passages par espece:
+if(nb_var_p_a != length(names_species) * 3) warning("Probleme lors du recodage des noms de variables")
+## recodage:
+names(prsc_abs)[-1] <- paste(names_species[floor((1:nb_var_p_a+2)/3)], 1:3, sep = "_")
+name_main_col <- "num_site_passage"
+names(prsc_abs)[1] <- name_main_col
+
+# import covariates variables:
+cov_prsc_abs <- readxl::read_excel(path = "./data/TABLEUR_MP.xlsx"
+  , sheet = "HABITAT"
+  , na = ".")
+# clean the names:
+names(cov_prsc_abs) <- gsub(" ", "_", tolower(names(cov_prsc_abs)))
+
+```
+
+# Demonstration issue du package:
+
+```{r}
+
+## Not run: 
+# load a csv file with detection-histories
+filename<-system.file("extdata/Blue_Ridge_pg99.csv",package="RPresence")
+salmdr.csv<-read.csv(filename)
+
+# Create PRESENCE input file object from csv
+salmdr.data<-create.pao(salmdr.csv,paoname="salmdr.pao")
+
+## fit some models
+mod1<-occ.mod(model=list(psi~1,p~SURVEY),data=salmdr.data,type="so")
+mod2<-occ.mod(model=list(psi~1,p~1)     ,data=salmdr.data,type="so")
+
+## create AIC table
+models<-list(mod1,mod2)
+results<-create.aic.table(models)
+summary(results)
+
+## print real estimates
+print_one_site_estimates(mod1)
+print_one_site_estimates(mod2)
+
+```
+
+
+# Application du modele:
+
+```{r}
+
+# on choisi une espece arbitrairement:
+i <- 1
+species <- names_species[i]
+
+col_to_select <- paste(species, 1:3, sep = "_")
+
+# convert to pao object:
+## on choisi la premiere espece:
+pao_p_a <- create.pao(prsc_abs[, col_to_select]
+  , unitcov = cov_prsc_abs)
+
+pao_p_a$nsurveys
+
+## fit some models. Only one survey, so can't expect great results
+mod1 <- occ.mod(model=list(psi~1, p~SURVEY), data=pao_p_a, type="so")
+mod2 <- occ.mod(model=list(psi~1, p~1), data=pao_p_a, type="so")
+
+## create AIC table
+models<-list(mod1,mod2)
+results<-create.aic.table(models)
+summary(results)
+
+```
+
+
+
+

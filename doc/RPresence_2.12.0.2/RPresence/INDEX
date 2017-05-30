@@ -1,0 +1,66 @@
+RPresence-package       R Interface for Program PRESENCE
+coef.occ.mod            Extract regression coefficients from occupancy
+                        model, i.e., real parameter estimates
+create.aic.table        Create AIC table
+create.pao              Create a pao data object.
+fitted.occ.mod          Extract fitted values from occupancy model,
+                        i.e., real parameter estimates
+get_not01_dm            get site/survey covarite names which are not
+                        all 0 or 1 in the design matrix so the 0/1
+                        covariate names (eg., Intercept) can be omitted
+                        from the temp.pao file. 'get_not01_dm' Gets
+                        site/survey covariate names which are not all 0
+                        or 1 in design matrix.
+import.project          Import a PRESENCE project into R.
+is.pao                  check if object is pao object
+mod.avg                 Calculate model averaged estimates
+mod.combos              Create a list of formulae for all possible
+                        first-order combinations for a set of
+                        variables.
+occ.mod                 Fit an occupancy model using Program PRESENCE
+occ.mod.do.1            Fit dynamic (multi-season) occupancy model
+                        using the first parameterisation in PRESENCE.
+occ.mod.do.4            Fit dynamic (multi-season) occupancy model
+                        using the fourth parameterisation (random
+                        changes in occupancy) in PRESENCE.
+occ.mod.do.ms.2         Fit multi-state dynamic occupancy
+                        (multi-season) occupancy model using the second
+                        (conditional binomial) parameterisation in
+                        PRESENCE.
+occ.mod.so              Fit static occupancy/single season model
+occ.mod.so.2sp          Fit two species, static occupancy (single
+                        season), or dynamic occupancy (multi-season)
+                        model
+occ.mod.so.2sp.cd       Fit two species, static occupancy (single
+                        season) model with correlated detectoins
+occ.mod.so.cd           Fit static occupancy, correlated detections
+                        model
+occ.mod.so.fp           Fit static occupancy/single season model
+occ.mod.so.mm           Fit multi-method (or multi-scale) static
+                        occupancy/single season model
+predict.occ.mod         Predict real parameter values.
+print_one_site_estimates
+                        Print real param estimates for i-th site only
+                        'print_one_site_estimates' Prints real param
+                        estimates for ith site only
+psi_cond                get conditional occupancy estimates from
+                        single-season ("so") model 'psicond' Computes
+                        conditional (on detection history) occupancy
+                        estimates from single-season ("so") model.
+                        Uses "delta" method, with numerical gradient.
+read.pao                Read a pao data object.
+simplify_dm             simplify design matrix by replacing all
+                        individual covariates which are all one or zero
+                        with '1' or '0' in the design matrix.  This
+                        makes the design matrix much easier to read and
+                        faster for the model. 'simplify_dm' Replaces
+                        ind. covariates which are all 0 or 1, with 0 or
+                        1.
+summary.aic.table       Summary of 'aic.table' object
+summary.occ.mod         Summary of occupancy model
+summary.pao             Summary of occupancy data object
+summed.wgt              Calculate summed model weights for a set of
+                        variables for a specific parameter.
+write.pao               Write a pao data object to disk file.
+write_dm_and_run        Write design matrices to output file and call
+                        PRESENCE to produce model estimates
