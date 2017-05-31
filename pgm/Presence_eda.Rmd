@@ -11,6 +11,9 @@ output: html_document
 
 ```{r}
 
+# initialisation de la seed:
+set.seed(1)
+
 # modifier le chemin du fichier ici:
 path_project <- "C:/YCR Perso/Presence/Presence/"
 
@@ -66,6 +69,15 @@ names(cov_prsc_abs) <- gsub(" ", "_", tolower(names(cov_prsc_abs)))
 # Attention, les donnees sont toutes numeriques donc utilisables telles quelles.
 # Neanmoins, si ce sont des factors, elles doivent etre dummifies(discretisees) pour pouvoir servir dans le modele.
 
+# dummifies les variables:
+cov_prsc_abs_mod <- cov_prsc_abs %>%
+  mutate(habitat_label = paste("habitat_", habitat)
+         , habitat = 1
+         , eau_label = paste("eau_", eau)
+         , eau = 1) %>%
+  spread(habitat_label, habitat, fill = 0) %>% 
+  spread(eau_label, eau, fill = 0)
+  
 ```
 
 # Application du modele:
@@ -103,9 +115,11 @@ pao_p_a$nunits
 ## la liste des modeles qu'il est possible d'utiliser est assez impressionnante, voir l'aide
 # ?occ.mod
 # ?occ.mod.so
-# modele 1: 
+# modele 1: probabilite d'occupation constante(psi) et probabilite de detection sur un passage (p)
 mod1 <- occ.mod(model=list(psi~1, p~SURVEY), data=pao_p_a, type="so")
+# modele 2: psi cst et p cst
 mod2 <- occ.mod(model=list(psi~1, p~1), data=pao_p_a, type="so")
+# modele 3: psi en fct de traduction_habitat et p en fonction de passage et traduction_habitat
 mod3 <- occ.mod(model=list(psi~traduction_habitat, p~SURVEY+traduction_habitat), data=pao_p_a, type="so")
 
 ## create AIC table
@@ -113,6 +127,11 @@ models<-list(mod1,mod2, mod3)
 results<-create.aic.table(models)
 summary(results)
 res_tab <- results$table
+```
+
+Modeles 2 et 3 sont valides.
+
+```{r}
 
 ## perform model averageing
 psi.ma<-mod.avg(aic.tab=results,param="psi")
@@ -150,3 +169,20 @@ ggplot(fusion_both, aes(x = c1, fill = as.factor(traduction_habitat))) +
   geom_bar()
 
 ```
+
+## Occupation par site:
+
+```{r}
+
+datatable(psi.ma)
+
+```
+
+## Detection probabilite par site et passage
+
+```{r}
+
+datatable(p.ma)
+
+```
+
