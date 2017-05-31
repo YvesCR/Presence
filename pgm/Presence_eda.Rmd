@@ -2,7 +2,9 @@
 title: "Presence/Absence de batraciens"
 author: "YCR"
 date: "30 May 2017"
-output: html_document
+output:
+  html_document:
+    code_folding: show
 ---
 
 # Initialisation
@@ -11,20 +13,21 @@ output: html_document
 
 ```{r}
 
-# initialisation de la seed:
+# initialisation de la graine, pour avoir une constance dans le hasard:
 set.seed(1)
 
-# modifier le chemin du fichier ici:
+# modifier le chemin du projet ici:
 path_project <- "C:/YCR Perso/Presence/Presence/"
 
-# Installation de pacman si premier run :
+# Installation de pacman si premier run:
 if(!require(pacman)) install.packages("pacman")
-# Un peu etrange, mais le package n'est ni sur cran ni ur bioconductor :
+# Un peu etrange, mais le package n'est ni sur cran ni sur bioconductor:
+# dl zip ici: https://www.mbr-pwrc.usgs.gov/software/presence.html
 if(!require(RPresence))
   install.packages("./doc/RPresence_2.12.0.2.zip", repos = NULL)
 
-# Chargement en memoire du chemin des packages :
-pacman::p_load(tidyverse, RPresence, readxl, DT)
+# Chargement en memoire du chemin des packages:
+pacman::p_load(tidyverse, RPresence, readxl, DT, MASS)
 
 ```
 
@@ -32,7 +35,7 @@ pacman::p_load(tidyverse, RPresence, readxl, DT)
 
 ```{r}
 
-# Importer les donnees:
+# Importer les donnees de presence:
 prsc_abs <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.xlsx")
   , sheet = "PRSCE ABSCE"
   , skip = 1
@@ -66,6 +69,19 @@ cov_prsc_abs <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.
 # clean the names:
 names(cov_prsc_abs) <- gsub(" ", "_", tolower(names(cov_prsc_abs)))
 
+## create labelled data:
+cov_prsc_abs <- cov_prsc_abs %>%
+  mutate(habitat_str = ifelse(habitat == 2, "Fosses inondes"
+    , ifelse(habitat == 3, "Ruisseaux"
+      , ifelse(habitat == 4, "Rivieres"
+        , ifelse(habitat == 7, "Mares"
+          , ifelse(habitat == 8, "Etangs"
+            , ifelse(habitat == 13, "Prairies humides", NA))))))
+    , eau_str = ifelse(eau == 16, "Eutrophisation"
+      , ifelse(eau == 17, "Turbidite"
+        , ifelse(eau == 19, "Absence", NA)))
+  )
+
 # Attention, les donnees sont toutes numeriques donc utilisables telles quelles.
 # Neanmoins, si ce sont des factors, elles doivent etre dummifies(discretisees) pour pouvoir servir dans le modele.
 
@@ -77,7 +93,17 @@ cov_prsc_abs_mod <- cov_prsc_abs %>%
          , eau = 1) %>%
   spread(habitat_label, habitat, fill = 0) %>% 
   spread(eau_label, eau, fill = 0)
-  
+
+
+# import frequence des especes:
+nbre_species_site <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.xlsx")
+  , sheet = "NBRE ESPECE SITE")
+
+# clean the data frame:
+names(nbre_species_site) <- gsub("[ ']", "_", names(nbre_species_site))
+nbre_species_site <- nbre_species_site %>%
+  dplyr::select(num_site, nbre_esp_total)
+
 ```
 
 # Application du modele:
@@ -185,4 +211,45 @@ datatable(psi.ma)
 datatable(p.ma)
 
 ```
+
+
+# Etude du nombre d'espece par site
+
+## eda: graphs
+
+```{r}
+# merge # species et environment:
+freq_species <- nbre_species_site %>%
+  left_join(cov_prsc_abs, by = "num_site")
+
+```
+
+```{r}
+# creation de la table de frequence:
+habitat_freq <- freq_species %>%
+  group_by(habitat_str) %>%
+  mutate(avg = mean(nbre_esp_total))
+
+ggplot(habitat_freq, aes(x = habitat_str, fill = avg)) +
+  geom_bar(position = position_dodge()) +
+  theme_light() +
+  ggtitle("Nombre d'especes moyenne par habitat")
+
+```
+
+
+```{r}
+# creation de la table de frequence:
+habitat_freq <- freq_species %>%
+  group_by(eau_str) %>%
+  mutate(avg = mean(nbre_esp_total))
+
+ggplot(habitat_freq, aes(x = eau_str, fill = avg)) +
+  geom_bar(position = position_dodge()) +
+  theme_light() +
+  ggtitle("Nombre d'especes moyenne par type d'eau")
+
+```
+
+Pas vraiment besoin d'un test pour determiner si la qualite de l'eau joue sur le nombre d'especes.
 
