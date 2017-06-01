@@ -273,16 +273,12 @@ pao_2_sp <- create.pao(pao_2_sp_0
 ##      occupancy species-specific, no interaction, parameters: psiA, psiBA=psiBa
 mod1 <- occ.mod(model=list(psi~SP, p~SP)
   , data=pao_2_sp, type="so.2sp.1", param="PsiBA")
-
-coef(mod1, param = "psi")
-# negative effect of 
-coef(mod1, param = "p")
+# modele de presence ne converge pas 
 
 ##      occupancy species-specific, interaction, parameters: psiA, psiBA, psiBa
 mod2 <- occ.mod(model=list(psi~SP+INT,p~SP)
   , data=pao_2_sp, type="so.2sp.1", param="PsiBA")
-
-coef(mod2, param = "psi")
+# idem previous model
 
 ##      occ: species-specific, interaction, 
 ##    detection: species=specific, interaction p,r (INT_o) and rBA,rBA (INT_d)
@@ -291,7 +287,13 @@ mod3 <- occ.mod(model=list(psi~SP+INT,p~SP+INT_o+INT_d+SP:INT_o)
   , data=pao_2_sp, type="so.2sp.1", param="PsiBA")
 
 coef(mod3, param = "psi")
+# convergence mais pas d'interaction.
 coef(mod3, param = "p")
+# le parametre important est b3_INT_o2
+#   La doc:
+#  The terms SP, INT_o and INT_d can be used to define a species effect on detection, a detection-level interaction where the occurrence of one species changes the detection probability of the other species and a second detection-level interaction where the detection of one species changes the detection probability of the other species in the same survey.
+
+# Si on a une detection de la libellule 1, on a une plus grande chance d edetecter la libellule 2, que ce soit sur le meme sitre ou sur le meme passage. Le parametre est plus important que la presence de la libellule 1.(?? La conclusion est etrange et necessite donc de retravailler le modele)
 
 tbl <- create.aic.table(list(mod1, mod2, mod3))
 print(tbl$table)
