@@ -228,10 +228,10 @@ freq_species <- nbre_species_site %>%
 # creation de la table de frequence:
 habitat_freq <- freq_species %>%
   group_by(habitat_str) %>%
-  mutate(avg = mean(nbre_esp_total))
+  summarise(avg = mean(nbre_esp_total))
 
-ggplot(habitat_freq, aes(x = habitat_str, fill = avg)) +
-  geom_bar(position = position_dodge()) +
+ggplot(habitat_freq, aes(x = habitat_str, y = avg, fill = avg)) +
+  stat_identity(geom = "bar") +
   theme_light() +
   ggtitle("Nombre d'especes moyenne par habitat")
 
@@ -239,17 +239,16 @@ ggplot(habitat_freq, aes(x = habitat_str, fill = avg)) +
 
 
 ```{r}
-# creation de la table de frequence:
+# creation de la table de frequences:
 habitat_freq <- freq_species %>%
   group_by(eau_str) %>%
-  mutate(avg = mean(nbre_esp_total))
+  summarise(avg = mean(nbre_esp_total))
 
-ggplot(habitat_freq, aes(x = eau_str, fill = avg)) +
-  geom_bar(position = position_dodge()) +
+ggplot(habitat_freq, aes(x = eau_str, y = avg, fill = avg)) +
+  stat_identity(geom = "bar") +
   theme_light() +
   ggtitle("Nombre d'especes moyenne par type d'eau")
 
 ```
 
 Pas vraiment besoin d'un test pour determiner si la qualite de l'eau joue sur le nombre d'especes.
-
