@@ -246,6 +246,58 @@ coef(mod3, "psi")
 
 ```
 
+### Modele 2 especes
+
+```{r, warning=FALSE}
+# on choisi deux espece arbitrairement:
+sp_t_1 <- 7 # Coenagrion_puella
+sp_t_2 <- 10 # Cordulia_aenea
+
+col_to_select_sp_1 <- paste(genre[sp_t_1], 1:3, sep = "_")
+col_to_select_sp_2 <- paste(genre[sp_t_2], 1:3, sep = "_")
+
+sp_1_df <- prsc_abs[ , col_to_select_sp_1]
+names(sp_1_df) <- paste("X", 1:3, sep = "_")
+sp_2_df <- prsc_abs[ , col_to_select_sp_2]
+names(sp_2_df) <- paste("X", 1:3, sep = "_")
+
+# Le soft est pas super bien fait, il assume premiere moitie du df
+#  appartient a une espece et seconde nmoitie a l'autre
+pao_2_sp_0 <- bind_rows(list(sp_1_df, sp_2_df))
+
+pao_2_sp <- create.pao(pao_2_sp_0
+    , unitcov = cov_prsc_abs
+    , title = "two sp essaie")
+
+## fit some models
+##      occupancy species-specific, no interaction, parameters: psiA, psiBA=psiBa
+mod1 <- occ.mod(model=list(psi~SP, p~SP)
+  , data=pao_2_sp, type="so.2sp.1", param="PsiBA")
+
+coef(mod1, param = "psi")
+# negative effect of 
+coef(mod1, param = "p")
+
+##      occupancy species-specific, interaction, parameters: psiA, psiBA, psiBa
+mod2 <- occ.mod(model=list(psi~SP+INT,p~SP)
+  , data=pao_2_sp, type="so.2sp.1", param="PsiBA")
+
+coef(mod2, param = "psi")
+
+##      occ: species-specific, interaction, 
+##    detection: species=specific, interaction p,r (INT_o) and rBA,rBA (INT_d)
+##     Note: this is default 2 sp. model (psiA,psiBA,psiBa,pA,pB,rA,rBA,rBa)
+mod3 <- occ.mod(model=list(psi~SP+INT,p~SP+INT_o+INT_d+SP:INT_o)
+  , data=pao_2_sp, type="so.2sp.1", param="PsiBA")
+
+coef(mod3, param = "psi")
+coef(mod3, param = "p")
+
+tbl <- create.aic.table(list(mod1, mod2, mod3))
+print(tbl$table)
+
+```
+
 ## Conlusion
 
 Probabilite certaine d'occupation (1).
@@ -263,7 +315,7 @@ fusion_both <- prsc_abs %>%
   mutate(c1 = ifelse(is.na(Cordulia_aenea_1), "Unknown", Cordulia_aenea_1))
 
 ggplot(fusion_both, aes(x = c1, fill = as.factor(traduction_habitat))) +
-  geom_bar()
+  geom_bar(position = position_dodge())
 
 ```
 

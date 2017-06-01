@@ -1,10 +1,10 @@
 
 
 PRESENCE - Presence/Absence-Site Occupancy data analysis
-Thu Jun 01 15:17:19 2017,       Version 12.0_170523.
+Thu Jun 01 23:26:44 2017,       Version 12.0_170523.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ==>i=paodata.pao
-==>j=.\pres1a481e407c5b.dm
+==>j=.\pres38c83ba3285c.dm
 ==>l=pres_psi(traduction_habitat)p(survey p traduction_habitat).out
 ==> 
 ==>quiet
@@ -194,5 +194,5 @@ psi-cond    72  unit 72        :   1.0000  0.0000     1.0000 - 1.0000
 psi-cond    73  unit 73        :   1.0000  0.0000     1.0000 - 1.0000 
 psi-cond    74  unit 74        :   1.0000  0.0000     1.0000 - 1.0000 
 
-CPU time= 0 seconds (0.00 min)
+CPU time= 1 seconds (0.02 min)
 
