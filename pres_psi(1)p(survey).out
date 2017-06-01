@@ -1,10 +1,10 @@
 
 
 PRESENCE - Presence/Absence-Site Occupancy data analysis
-Wed May 31 10:44:33 2017,       Version 12.0_170523.
+Thu Jun 01 14:54:54 2017,       Version 12.0_170523.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ==>i=paodata.pao
-==>j=.\pres36f03671449c.dm
+==>j=.\pres62c5f9516f3.dm
 ==>l=pres_psi(1)p(survey).out
 ==> 
 ==>quiet
@@ -21,8 +21,8 @@ no model name N,T-->74,3
 Number of sites                = 74
 Number of sampling occasions   = 3
 Number of states               = 0
-Number of missing observations = 132
-Data checksum = 21986
+Number of missing observations = 150
+Data checksum = 21967
 
 NSiteCovs-->1
 site_covname[0]=psi.int
@@ -67,23 +67,33 @@ modtype=1
 
 Custom Model:
 
-Number of significant digits   =   8.0
+Number of significant digits   =   5.9
+
+**** Numerical convergence may not have been reached.
+     Parameter estimates converged to approximately 
+     5.85 significant digits.
+
 
 Model has been fit using the logistic link.
 
 
 Number of parameters           = 4
-Number of function calls           = 262
--2log(likelihood)              = 90.8765
-AIC                            = 98.8765
+Number of function calls           = 225
+
+**** Numerical convergence may not have been reached.
+     Parameter estimates converged to approximately 
+     5.85 significant digits.
+
+-2log(likelihood)              = 79.6608
+AIC                            = 87.6608
 
 Untransformed Estimates of coefficients for covariates (Beta's)
 ======================================================================
                                           estimate    std.error
-A1   psi                              :  26.743932  117008.134115
-B1   p1                               :  -0.268264    0.368438
-B2   p1.p.SURVEY2                     :   0.536528    0.521042
-B3   p1.p.SURVEY3                     :  -3.099032    1.081803
+A1   psi                              :  27.413520  181301.412577
+B1   p1                               :  -1.945910    0.616943
+B2   p1.p.SURVEY2                     :   2.833213    0.763038
+B3   p1.p.SURVEY3                     :   1.609438    0.742938
 
 ============================================================
 
@@ -95,9 +105,9 @@ psi             1 unit 1          :  1.0000   0.0000     0.0000 -  1.0000
 
    Individual Site estimates of <p1>
                 Site               estimate  Std.err   95% conf. interval
-p1              1 unit 1          :  0.4333   0.0905     0.2708 -  0.6116
-p2              1 unit 1          :  0.5667   0.0905     0.3884 -  0.7292
-p3              1 unit 1          :  0.0333   0.0328     0.0047 -  0.2020
+p1              1 unit 1          :  0.1250   0.0675     0.0409 -  0.3237
+p2              1 unit 1          :  0.7083   0.0928     0.5018 -  0.8541
+p3              1 unit 1          :  0.4167   0.1006     0.2409 -  0.6166
 
 ============================================================
 

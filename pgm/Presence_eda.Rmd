@@ -33,7 +33,21 @@ pacman::p_load(tidyverse, RPresence, readxl, DT, MASS)
 
 ## Data
 
-```{r}
+```{r, warning=FALSE}
+
+# import total:
+total <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.xlsx")
+  , sheet = "TOTAL"
+  , na = ".")
+# warning: problems of coding in the variables
+
+# clean the data frame:
+names(total) <- gsub("[ ']", "_", tolower(names(total)))
+names(total)[which(names(total) == "num_field")] <- "num_site"
+
+# create a group df:
+sous_groupes <- total %>%
+  distinct(genre, sous_ordre)
 
 # Importer les donnees de presence:
 prsc_abs <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.xlsx")
@@ -48,19 +62,23 @@ lab_prsc_abs <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.
 name_file_species <- names(lab_prsc_abs)
 
 # clean les noms d'especes:
-names_species <- gsub(" ", "_", name_file_species[which(name_file_species != ".")])
+genre <- gsub(" ", "_", name_file_species[which(name_file_species != ".")])
 
 # Verification:
-names_species
+genre
 
 # Change les labels du csv:
 nb_var_p_a <- length(names(prsc_abs))- 1
 ## QA, 3 passages par espece:
-if(nb_var_p_a != length(names_species) * 3) warning("Probleme lors du recodage des noms de variables")
+if(nb_var_p_a != length(genre) * 3) warning("Probleme lors du recodage des noms de variables")
 ## recodage:
-names(prsc_abs)[-1] <- paste(names_species[floor((1:nb_var_p_a+2)/3)], 1:3, sep = "_")
+names(prsc_abs)[-1] <- paste(genre[floor((1:nb_var_p_a+2)/3)], 1:3, sep = "_")
 name_main_col <- "num_site"
 names(prsc_abs)[1] <- name_main_col
+
+# delete added values due to selector in excel:
+prsc_abs <- prsc_abs %>%
+  filter(!is.na(num_site))
 
 # import covariates variables:
 cov_prsc_abs <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.xlsx")
@@ -80,7 +98,44 @@ cov_prsc_abs <- cov_prsc_abs %>%
     , eau_str = ifelse(eau == 16, "Eutrophisation"
       , ifelse(eau == 17, "Turbidite"
         , ifelse(eau == 19, "Absence", NA)))
-  )
+    , act_hum_str = ifelse(act_hum == 50, "base de loisirs"
+      , ifelse(act_hum == 51, "peche de loisirs"
+        , ifelse(act_hum == 52, "pisciculture"
+          , ifelse(act_hum == 53, "extraction de materiaux"
+            , ifelse(act_hum == 54, "traitement des eaux usees"
+              , ifelse(act_hum == 55, "conservation de la nature"
+                , ifelse(act_hum == 56, "aucune activite"
+                  , ifelse(act_hum == 57, "inconnu", NA))))))))
+    , vegetation_str = ifelse(vegetation == 27, "vegetation submergee"
+      , ifelse(vegetation == 28, "vegetation flottante"
+        , ifelse(vegetation == 29, "helophytes"
+          , ifelse(vegetation == 30, "vegetation submergee et flottante"
+            , ifelse(vegetation == 31, "vegetation submergee et helophytes"
+              , ifelse(vegetation == 32, "vegetation flottante et helophytes"
+                , ifelse(vegetation == 33, "pas de vegetation aquatique", NA)))))))
+    , niveau_str = ifelse(niveau == 20, "assechement periodique"
+      , ifelse(niveau == 21, "tres variable"
+        , ifelse(niveau == 22, "constant"
+          , ifelse(niveau == 23, "inconnu", NA))))
+    , courant_str = ifelse(courant == 24, "stagnant"
+      , ifelse(courant == 25, "lent",ifelse(courant == 26, "rapide", NA)))
+    , rives_str = ifelse(rives == 34, "rives nues"
+      , ifelse(rives == 35, "vegetation herbabcee"
+        , ifelse(rives == 36, "vegetation ligneuse"
+          , ifelse(rives == 37, "herbacee et ligneuse", NA))))
+    , hab_ter_str = ifelse(hab_ter == 38, "boisement feuillus"
+      , ifelse(hab_ter == 39, "boisement coniferes"
+        , ifelse(hab_ter == 40, "boisement mixte"
+          , ifelse(hab_ter == 41, "buissons, haies"
+            , ifelse(hab_ter == 42, "milieu ouvert non agricole"
+              , ifelse(hab_ter == 43, "sol minéral sans vegetation"
+                , ifelse(hab_ter == 44, "urbain, espaces verts"
+                  , ifelse(hab_ter == 45, "prairie de fauche"
+                    , ifelse(hab_ter == 46, "grande culture"
+                      , ifelse(hab_ter == 47, "verger,vignes,maraichers"
+                        , ifelse(hab_ter == 48, "elevage"
+                          , ifelse(hab_ter == 49, "autre milieu agricole"
+                            , NA)))))))))))))
 
 # Attention, les donnees sont toutes numeriques donc utilisables telles quelles.
 # Neanmoins, si ce sont des factors, elles doivent etre dummifies(discretisees) pour pouvoir servir dans le modele.
@@ -90,10 +145,26 @@ cov_prsc_abs_mod <- cov_prsc_abs %>%
   mutate(habitat_label = paste("habitat_", habitat)
          , habitat = 1
          , eau_label = paste("eau_", eau)
-         , eau = 1) %>%
-  spread(habitat_label, habitat, fill = 0) %>% 
+         , eau = 1
+         , rives_label = paste("rives_", rives)
+         , rives = 1
+         , courant_label = paste("courant_", courant)
+         , courant = 1
+         , vegetation_label = paste("vegetation_", vegetation)
+         , vegetation = 1
+         , hab_ter_label = paste("hab_ter_", hab_ter)
+         , hab_ter = 1
+         , niveau_label = paste("niveau_", niveau)
+         , niveau = 1
+         , act_hum_label = paste("act_hum_", act_hum)
+         , act_hum = 1) %>% 
+  spread(habitat_label, habitat, fill = 0) %>%
+  spread(courant_label, courant, fill = 0) %>%
+  spread(vegetation_label, vegetation, fill = 0) %>%
+  spread(rives_label, rives, fill = 0) %>%
+  spread(hab_ter_label, hab_ter, fill = 0) %>%
+  spread(act_hum_label, act_hum, fill = 0) %>%
   spread(eau_label, eau, fill = 0)
-
 
 # import frequence des especes:
 nbre_species_site <- readxl::read_excel(path = paste0(path_project, "data/TABLEUR_MP.xlsx")
@@ -114,7 +185,7 @@ nbre_species_site <- nbre_species_site %>%
 
 # on choisi une espece arbitrairement:
 i <- 12
-species <- names_species[i]
+species <- genre[i]
 
 col_to_select <- paste(species, 1:3, sep = "_")
 
@@ -237,7 +308,6 @@ ggplot(habitat_freq, aes(x = habitat_str, y = avg, fill = avg)) +
 
 ```
 
-
 ```{r}
 # creation de la table de frequences:
 habitat_freq <- freq_species %>%
@@ -252,3 +322,58 @@ ggplot(habitat_freq, aes(x = eau_str, y = avg, fill = avg)) +
 ```
 
 Pas vraiment besoin d'un test pour determiner si la qualite de l'eau joue sur le nombre d'especes.
+
+```{r}
+# creation de la table de frequences:
+freq_table <- freq_species %>%
+  group_by(hab_ter_str) %>%
+  summarise(avg = mean(nbre_esp_total))
+
+ggplot(freq_table, aes(x = hab_ter_str, y = avg, fill = avg)) +
+  stat_identity(geom = "bar") +
+  theme_light() +
+  ggtitle("Nombre d'especes moyenne par habitat terrestre")
+
+```
+
+```{r}
+# creation de la table de frequences:
+freq_table <- freq_species %>%
+  group_by(vegetation_str) %>%
+  summarise(avg = mean(nbre_esp_total))
+
+ggplot(freq_table, aes(x = vegetation_str, y = avg, fill = avg)) +
+  stat_identity(geom = "bar") +
+  theme_light() +
+  ggtitle("Nombre d'especes moyenne par Vegetation aquatique")
+
+```
+
+```{r}
+# creation de la table de frequences:
+freq_table <- freq_species %>%
+  group_by(rives_str) %>%
+  summarise(avg = mean(nbre_esp_total))
+
+ggplot(freq_table, aes(x = rives_str, y = avg, fill = avg)) +
+  stat_identity(geom = "bar") +
+  theme_light() +
+  ggtitle("Nombre d'especes moyenne par rives")
+
+```
+
+
+```{r}
+# creation de la table de frequences:
+freq_table <- freq_species %>%
+  group_by(act_hum_str) %>%
+  summarise(avg = mean(nbre_esp_total))
+
+ggplot(freq_table, aes(x = act_hum_str, y = avg, fill = avg)) +
+  stat_identity(geom = "bar") +
+  theme_light() +
+  ggtitle("Nombre d'especes moyenne par activites humaines")
+
+```
+
+

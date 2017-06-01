@@ -1,10 +1,10 @@
 
 
 PRESENCE - Presence/Absence-Site Occupancy data analysis
-Wed May 31 10:44:33 2017,       Version 12.0_170523.
+Thu Jun 01 14:54:55 2017,       Version 12.0_170523.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ==>i=paodata.pao
-==>j=.\pres36f042168da.dm
+==>j=.\pres62c14bd39b4.dm
 ==>l=pres_psi(traduction_habitat)p(survey p traduction_habitat).out
 ==> 
 ==>quiet
@@ -21,8 +21,8 @@ no model name N,T-->74,3
 Number of sites                = 74
 Number of sampling occasions   = 3
 Number of states               = 0
-Number of missing observations = 132
-Data checksum = 21986
+Number of missing observations = 150
+Data checksum = 21967
 
 NSiteCovs-->2
 site_covname[0]=psi.int
@@ -69,27 +69,35 @@ modtype=1
 
 Custom Model:
 
-Number of significant digits   =   8.0
+Number of significant digits   =   3.8
+
+**** Numerical convergence may not have been reached.
+     Parameter estimates converged to approximately 
+     3.81 significant digits.
+
 
 Model has been fit using the logistic link.
 
 
 Number of parameters           = 6
-Number of function calls           = 350
--2log(likelihood)              = 90.8765
-AIC                            = 102.8765
+Number of function calls           = 348
 
-***** neg. std.err(s) in VC matrix
+**** Numerical convergence may not have been reached.
+     Parameter estimates converged to approximately 
+     3.81 significant digits.
+
+-2log(likelihood)              = 79.1172
+AIC                            = 91.1172
 
 Untransformed Estimates of coefficients for covariates (Beta's)
 ======================================================================
                                           estimate    std.error
-A1   psi                              :  26.743932  117008.134115
-A2   psi.psi.traduction_habitat       :   0.000000   -1.#IND00
-B1   p1                               :  -0.268264    0.368438
-B2   p1.p.SURVEY2                     :   0.536528    0.521042
-B3   p1.p.SURVEY3                     :  -3.099032    1.081803
-B4   p1.p.traduction_habitat          :   0.000000   -1.#IND00
+A1   psi                              :  26.815802  213534.299235
+A2   psi.psi.traduction_habitat       :   1.103271  117309.803840
+B1   p1                               :  -2.417881    0.908497
+B2   p1.p.SURVEY2                     :   2.855916    0.767457
+B3   p1.p.SURVEY3                     :   1.619585    0.745260
+B4   p1.p.traduction_habitat          :   0.548697    0.752770
 
 ============================================================
 
@@ -101,9 +109,9 @@ psi             1 unit 1          :  1.0000   0.0000     0.0000 -  1.0000
 
    Individual Site estimates of <p1>
                 Site               estimate  Std.err   95% conf. interval
-p1              1 unit 1          :  0.4333   0.0905     0.2708 -  0.6116
-p2              1 unit 1          :  0.5667   0.0905     0.3884 -  0.7292
-p3              1 unit 1          :  0.0333   0.0328     0.0047 -  0.2020
+p1              1 unit 1          :  0.0818   0.0683     0.0148 -  0.3459
+p2              1 unit 1          :  0.6078   0.1802     0.2604 -  0.8721
+p3              1 unit 1          :  0.3104   0.1636     0.0914 -  0.6682
 
 ============================================================
 
